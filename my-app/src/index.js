@@ -5,13 +5,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { initializeApp } from 'firebase/app'
 import{
-    getFirestore, collection, getDocs
+	getFirestore, collection, getDocs,
+	addDoc
 }from 'firebase/firestore'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+	<App />
   </React.StrictMode>
 );
 
@@ -40,6 +41,25 @@ const colRef = (db, 'WaterFountain')
 
 getDocs(colRef)
 .then((snapshot) => {
-    console.log(snapshot.docs)
+	console.log(snapshot.docs)
 }
 )
+
+//adding documents
+const addWaterFountain = document.querySelector('.add')
+addWaterFountain.addEventListener('submit', (e) =>{
+	e.preventDefault()
+
+	addDoc(colRef, {
+		bottle: addWaterFountain.bottle.value,
+		filter: addWaterFountain.filter.value,
+		temp: addWaterFountain.temp.value,
+		working: addWaterFountain.working.value,
+	})
+	.then(() => {
+		addWaterFountain.reset()
+		console.log('Document added successfully');
+
+	}
+	)
+})
