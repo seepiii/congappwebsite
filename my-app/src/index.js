@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { initializeApp } from 'firebase/app'
 import{
 	getFirestore, collection, getDocs,
@@ -15,11 +14,11 @@ root.render(
 	<App />
   </React.StrictMode>
 );
+/*
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
 
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -37,29 +36,40 @@ initializeApp(firebaseConfig)
 
 const db = getFirestore()
 
-const colRef = (db, 'WaterFountain')
+const colRef = collection(db, 'WaterFountain');
 
 getDocs(colRef)
 .then((snapshot) => {
 	console.log(snapshot.docs)
 }
 )
+console.log(colRef);
 
-//adding documents
-const addWaterFountain = document.querySelector('.add')
-addWaterFountain.addEventListener('submit', (e) =>{
-	e.preventDefault()
 
-	addDoc(colRef, {
-		bottle: addWaterFountain.bottle.value,
-		filter: addWaterFountain.filter.value,
-		temp: addWaterFountain.temp.value,
-		working: addWaterFountain.working.value,
-	})
-	.then(() => {
-		addWaterFountain.reset()
-		console.log('Document added successfully');
 
-	}
-	)
-})
+document.addEventListener('DOMContentLoaded', () => {
+  const addWaterFountain = document.querySelector('.add');
+  
+  if (addWaterFountain) {
+    addWaterFountain.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        bottle: addWaterFountain.querySelector('input[name="bottle"]').checked,
+        filter: addWaterFountain.querySelector('input[name="filter"]').value,
+        temp: addWaterFountain.querySelector('input[name="temp"]').value,
+        working: addWaterFountain.querySelector('input[name="working"]').checked,
+      };
+
+      addDoc(colRef, formData)
+        .then(() => {
+          addWaterFountain.reset();
+          console.log('Document added successfully');
+        })
+        .catch((error) => {
+          console.error('Error adding document:', error);
+        });
+    });
+  }
+});
+*/
