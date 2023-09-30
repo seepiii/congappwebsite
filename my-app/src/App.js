@@ -229,6 +229,102 @@ function App() {
         </div>
       </Popup>
 
+      <div className="popup-content">
+  <label>
+    Portapotty:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewPortapotty(event.target.checked);
+      }}
+      checked={newPortapotty}
+    />
+  </label>
+
+  <label>
+    Standalone:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewStandalone(event.target.checked);
+      }}
+      checked={newStandalone}
+    />
+  </label>
+
+  <label>
+    Level of Cleanliness:
+    <select
+      onChange={(event) => {
+        setNewCleanliness(event.target.value);
+      }}
+      value={newCleanliness}
+    >
+      <option value="">Select cleanliness level...</option>
+      <option value="Disgusting">Disgusting</option>
+      <option value="Serviceable">Serviceable</option>
+      <option value="Clean">Clean</option>
+    </select>
+  </label>
+
+  <label>
+    Toilet Paper:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewToiletPaper(event.target.checked);
+      }}
+      checked={newToiletPaper}
+    />
+  </label>
+
+  <label>
+    Handicap Accessible:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewHandicapAccessible(event.target.checked);
+      }}
+      checked={newHandicapAccessible}
+    />
+  </label>
+
+  <label>
+    Unisex:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewUnisex(event.target.checked);
+      }}
+      checked={newUnisex}
+    />
+  </label>
+
+  <label>
+    Diaper Changing Station:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewDiaperChangingStation(event.target.checked);
+      }}
+      checked={newDiaperChangingStation}
+    />
+  </label>
+
+  <label>
+    Soap:
+    <input
+      type="checkbox"
+      onChange={(event) => {
+        setNewSoap(event.target.checked);
+      }}
+      checked={newSoap}
+    />
+  </label>
+
+  <button onClick={createUser2}>Add Entry2</button>
+</div>
+
       {users.map((user) => {
         return (
           <div key={user.id}>
@@ -260,3 +356,16 @@ function App() {
 }
 
 export default App;
+
+
+/*
+get all the values from query using check boxes and drop downs.
+ When the user presses apply, it calls the query function and 
+ passes in the values from the check boxes and drop downs. The 
+ query function then uses the values to query the database and 
+ return the results. The results are then displayed on the screen.
+
+ if all the values are null or the apply changes button has not been
+ added, then juts use the map function to display all the values which
+ we already have the code for.
+*/
