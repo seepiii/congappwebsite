@@ -11,6 +11,8 @@ import {
 } from 'firebase/firestore';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { query, where } from 'firebase/firestore';
+
 
 function App() {
   const [newWorking, setNewWorking] = useState('');
@@ -29,10 +31,43 @@ function App() {
   const [newSoap, setNewSoap] = useState('');
   const [showPopup2, setShowPopup2] = useState(false);
 
+  const [queryPortapotty, setQueryPortapotty] = useState(false);
+  const [queryStandalone, setQueryStandalone] = useState(false);
+  const [queryCleanliness, setQueryCleanliness] = useState('');
+  const [queryToiletPaper, setQueryToiletPaper] = useState(false);
+  const [queryHandicapAccessible, setQueryHandicapAccessible] = useState(false);
+  const [queryUnisex, setQueryUnisex] = useState(false);
+  const [queryDiaperChangingStation, setQueryDiaperChangingStation] =
+    useState(false);
+  const [querySoap, setQuerySoap] = useState(false);
+
+
   const [users, setUsers] = useState([]);
   const [entries2, setEntries2] = useState([]); // For the second set of entries
   const fountainCollectionRef = collection(db, 'WaterFountain');
   const entries2CollectionRef = collection(db, 'Entries2');
+
+  const fetchFilteredData = async () => {
+  const q = query(fountainCollectionRef,
+     where("portapotty", "==", queryPortapotty), 
+     where("standalone", "==", queryStandalone), 
+     where("cleanliness", "==", queryCleanliness), 
+     where("toiletPaper", "==", queryToiletPaper), 
+     where("handicapAccessible", "==", queryHandicapAccessible), 
+     where("unisex", "==", queryUnisex), 
+     where("diaperChangingStation", "==", queryDiaperChangingStation), 
+     where("soap", "==", querySoap)
+     );
+  const fountainQueryCollection = await getDocs(q);
+  const querySnapshot = await getDocs(q);
+  const fetchedData = querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+  setEntries2(fetchedData); 
+};
+
+  
 
   const createUser = async () => {
     await addDoc(fountainCollectionRef, {
@@ -235,9 +270,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewPortapotty(event.target.checked);
+        setQueryPortapotty(event.target.checked);
       }}
-      checked={newPortapotty}
+      checked={queryPortapotty}
     />
   </label>
 
@@ -246,9 +281,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewStandalone(event.target.checked);
+        setQueryStandalone(event.target.checked);
       }}
-      checked={newStandalone}
+      checked={queryStandalone}
     />
   </label>
 
@@ -256,9 +291,9 @@ function App() {
     Level of Cleanliness:
     <select
       onChange={(event) => {
-        setNewCleanliness(event.target.value);
+        setQueryCleanliness(event.target.value);
       }}
-      value={newCleanliness}
+      value={queryCleanliness}
     >
       <option value="">Select cleanliness level...</option>
       <option value="Disgusting">Disgusting</option>
@@ -272,9 +307,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewToiletPaper(event.target.checked);
+        setQueryToiletPaper(event.target.checked);
       }}
-      checked={newToiletPaper}
+      checked={queryToiletPaper}
     />
   </label>
 
@@ -283,9 +318,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewHandicapAccessible(event.target.checked);
+        setQueryHandicapAccessible(event.target.checked);
       }}
-      checked={newHandicapAccessible}
+      checked={queryHandicapAccessible}
     />
   </label>
 
@@ -294,9 +329,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewUnisex(event.target.checked);
+        setQueryUnisex(event.target.checked);
       }}
-      checked={newUnisex}
+      checked={queryUnisex}
     />
   </label>
 
@@ -305,9 +340,9 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewDiaperChangingStation(event.target.checked);
+        setQueryDiaperChangingStation(event.target.checked);
       }}
-      checked={newDiaperChangingStation}
+      checked={queryDiaperChangingStation}
     />
   </label>
 
@@ -316,13 +351,13 @@ function App() {
     <input
       type="checkbox"
       onChange={(event) => {
-        setNewSoap(event.target.checked);
+        setQuerySoap(event.target.checked);
       }}
-      checked={newSoap}
+      checked={querySoap}
     />
   </label>
 
-  <button onClick={createUser2}>Add Entry2</button>
+  <button onClick={fetchFilteredData}>Apply</button>
 </div>
 
       {users.map((user) => {
