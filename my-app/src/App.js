@@ -362,7 +362,7 @@ function App() {
 
       {users.map((user) => {
         return (
-          <div key={user.id}>
+          <div key={user.id} className="boxed-entry">
             <h1>working: {user.working}</h1>
             <h1>quality: {user.quality}</h1>
             <h1>temp: {user.temp}</h1>
@@ -374,7 +374,7 @@ function App() {
 
       {entries2.map((entry2) => {
         return (
-          <div key={entry2.id}>
+          <div key={entry2.id} className="boxed-entry">
             <h1>Portapotty: {entry2.portapotty}</h1>
             <h1>Standalone: {entry2.standalone}</h1>
             <h1>Cleanliness: {entry2.cleanliness}</h1>

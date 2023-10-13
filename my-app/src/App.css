@@ -12,7 +12,12 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.boxed-entry {
+  border: 7px solid #000000; /* Add your preferred border style */
+  padding: 9px; /* Add padding to create some spacing */
+  margin: 9px; /* Add margin for separation */
+  max-width: 300px; /* Set a maximum width in pixels */
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
