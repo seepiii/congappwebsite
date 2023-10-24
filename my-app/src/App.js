@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
-import { db } from './firebase.js';
 import {
   collection,
   getDocs,
@@ -11,7 +10,9 @@ import {
 } from 'firebase/firestore';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { db, storage } from './firebase.js';
 import { query, where } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
   const [newTemp, setNewTemp] = useState(null);
   const [newBottle, setNewBottle] = useState(null);
   const [showPopup1, setShowPopup1] = useState(false);
- 
+  const [newImage, setNewImage] = useState(null);
+
   const [newPortapotty, setNewPortapotty] = useState(null);
   const [newStandalone, setNewStandalone] = useState(null);
   const [newCleanliness, setNewCleanliness] = useState(null);
@@ -76,15 +78,19 @@ function App() {
  
 
 
-  const createUser = async () => {
-    await addDoc(fountainCollectionRef, {
-      working: newWorking,
-      quality: NewQuality,
-      temp: newTemp,
-      bottle: newBottle,
-    });
-    setShowPopup1(false);
+const createUser = async () => {
+  // Create a new object to represent the water fountain entry, including the image
+  const newEntry = {
+    working: newWorking,
+    quality: NewQuality,
+    temp: newTemp,
+    bottle: newBottle,
+    image: newImage, // Include the uploaded image in the entry
   };
+
+  await addDoc(fountainCollectionRef, newEntry);
+  setShowPopup1(false);
+};
 
 
   const createUser2 = async () => {
@@ -106,7 +112,24 @@ function App() {
     const userDoc = doc(db, 'WaterFountain', id);
     await deleteDoc(userDoc);
   };
-
+  
+  const handleImageUpload = async (file) => {
+    try {
+      // Create a storage reference
+      const storageRef = ref(storage, `images/${file.name}`);
+  
+      // Upload the file to the storage reference
+      await uploadBytes(storageRef, file);
+  
+      // Get the download URL of the uploaded image
+      const imageUrl = await getDownloadURL(storageRef);
+  
+      // Set the image URL to the state
+      setNewImage(imageUrl);
+    } catch (error) {
+      console.error('Error uploading image: ', error);
+    }
+  };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -168,7 +191,14 @@ function App() {
                 Bottle filler?
                 <input type="checkbox" onChange={(e) => setNewBottle(e.target.checked)} checked={newBottle} />
               </label>
-
+              <label>
+      Upload Picture:
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handleImageUpload(e.target.files[0])}
+      />
+    </label>
 
               <button onClick={createUser}>Add Water Fountain</button>
             </div>
