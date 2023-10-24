@@ -15,21 +15,23 @@ import { query, where } from 'firebase/firestore';
 
 
 function App() {
-  const [newWorking, setNewWorking] = useState('');
-  const [NewQuality, setNewQuality] = useState('');
-  const [newTemp, setNewTemp] = useState('');
-  const [newBottle, setNewBottle] = useState('');
+  const [newWorking, setNewWorking] = useState(null);
+  const [NewQuality, setNewQuality] = useState(null);
+  const [newTemp, setNewTemp] = useState(null);
+  const [newBottle, setNewBottle] = useState(null);
   const [showPopup1, setShowPopup1] = useState(false);
-
-  const [newPortapotty, setNewPortapotty] = useState('');
-  const [newStandalone, setNewStandalone] = useState('');
-  const [newCleanliness, setNewCleanliness] = useState('');
-  const [newToiletPaper, setNewToiletPaper] = useState('');
-  const [newHandicapAccessible, setNewHandicapAccessible] = useState('');
-  const [newUnisex, setNewUnisex] = useState('');
-  const [newDiaperChangingStation, setNewDiaperChangingStation] = useState('');
-  const [newSoap, setNewSoap] = useState('');
+ 
+  const [newPortapotty, setNewPortapotty] = useState(null);
+  const [newStandalone, setNewStandalone] = useState(null);
+  const [newCleanliness, setNewCleanliness] = useState(null);
+  const [newToiletPaper, setNewToiletPaper] = useState(null);
+  const [newHandicapAccessible, setNewHandicapAccessible] = useState(null);
+  const [newUnisex, setNewUnisex] = useState(null);
+  const [newDiaperChangingStation, setNewDiaperChangingStation] = useState(null);
+  const [newSoap, setNewSoap] = useState(null);
   const [showPopup2, setShowPopup2] = useState(false);
+ 
+
 
   const [queryPortapotty, setQueryPortapotty] = useState(false);
   const [queryStandalone, setQueryStandalone] = useState(false);
@@ -42,20 +44,23 @@ function App() {
   const [querySoap, setQuerySoap] = useState(false);
 
 
+
+
   const [users, setUsers] = useState([]);
   const [entries2, setEntries2] = useState([]); // For the second set of entries
   const fountainCollectionRef = collection(db, 'WaterFountain');
   const entries2CollectionRef = collection(db, 'Entries2');
 
+
   const fetchFilteredData = async () => {
   const q = query(fountainCollectionRef,
-     where("portapotty", "==", queryPortapotty), 
-     where("standalone", "==", queryStandalone), 
-     where("cleanliness", "==", queryCleanliness), 
-     where("toiletPaper", "==", queryToiletPaper), 
-     where("handicapAccessible", "==", queryHandicapAccessible), 
-     where("unisex", "==", queryUnisex), 
-     where("diaperChangingStation", "==", queryDiaperChangingStation), 
+     where("portapotty", "==", queryPortapotty),
+     where("standalone", "==", queryStandalone),
+     where("cleanliness", "==", queryCleanliness),
+     where("toiletPaper", "==", queryToiletPaper),
+     where("handicapAccessible", "==", queryHandicapAccessible),
+     where("unisex", "==", queryUnisex),
+     where("diaperChangingStation", "==", queryDiaperChangingStation),
      where("soap", "==", querySoap)
      );
   const fountainQueryCollection = await getDocs(q);
@@ -64,10 +69,12 @@ function App() {
     ...doc.data(),
     id: doc.id,
   }));
-  setEntries2(fetchedData); 
+  setEntries2(fetchedData);
 };
 
-  
+
+ 
+
 
   const createUser = async () => {
     await addDoc(fountainCollectionRef, {
@@ -78,6 +85,7 @@ function App() {
     });
     setShowPopup1(false);
   };
+
 
   const createUser2 = async () => {
     await addDoc(entries2CollectionRef, {
@@ -93,10 +101,12 @@ function App() {
     setShowPopup2(false);
   };
 
+
   const deleteUser = async (id) => {
     const userDoc = doc(db, 'WaterFountain', id);
     await deleteDoc(userDoc);
   };
+
 
   useEffect(() => {
     const getUsers = async () => {
@@ -104,8 +114,10 @@ function App() {
       setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
+
     getUsers();
   }, [fountainCollectionRef]);
+
 
   useEffect(() => {
     const getEntries2 = async () => {
@@ -113,85 +125,74 @@ function App() {
       setEntries2(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
+
     getEntries2();
   }, [entries2CollectionRef]);
+
 
   return (
     <div className="App">
       <button onClick={() => setShowPopup1(true)}>Enter Water Fountain</button>
 
+
       <Popup open={showPopup1} onClose={() => setShowPopup1(false)}>
-        <div className="popup-content">
-          <select
-            onChange={(event) => {
-              setNewWorking(event.target.value);
-            }}
-            value={newWorking}
-          >
-            <option value="">Select working...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+            <div className="popup-content">
+              <label>
+                Working?
+                <input type="checkbox" onChange={(e) => setNewWorking(e.target.checked)} checked={newWorking} />
+              </label>
 
-          <select
-            onChange={(event) => {
-              setNewQuality(event.target.value);
-            }}
-            value={NewQuality}
-          >
-            <option value="">Select quality...</option>
-            <option value="Red">Red</option>
-            <option value="Yellow">Yellow</option>
-            <option value="Green">Green</option>
-          </select>
 
-          <input
-            placeholder="temp..."
-            onChange={(event) => {
-              setNewTemp(event.target.value);
-            }}
-          />
+              <select
+                onChange={(event) => {
+                  setNewQuality(event.target.value);
+                }}
+                value={NewQuality}
+              >
+                <option value="">Select quality...</option>
+                <option value="Red">Red</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Green">Green</option>
+              </select>
 
-          <select
-            onChange={(event) => {
-              setNewBottle(event.target.value);
-            }}
-            value={newBottle}
-          >
-            <option value="">Select bottle filler...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
 
-          <button onClick={createUser}>Add Water Fountain</button>
-        </div>
+              <input
+                placeholder="temp..."
+                onChange={(event) => {
+                  setNewTemp(event.target.value);
+                }}
+              />
+
+
+              <label>
+                Bottle filler?
+                <input type="checkbox" onChange={(e) => setNewBottle(e.target.checked)} checked={newBottle} />
+              </label>
+
+
+              <button onClick={createUser}>Add Water Fountain</button>
+            </div>
       </Popup>
+
+
+
 
       <button onClick={() => setShowPopup2(true)}>Enter Restroom</button>
 
+
       <Popup open={showPopup2} onClose={() => setShowPopup2(false)}>
         <div className="popup-content">
-          <select
-            onChange={(event) => {
-              setNewPortapotty(event.target.value);
-            }}
-            value={newPortapotty}
-          >
-            <option value="">Portapotty?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <label>
+            Portapotty?
+            <input type="checkbox" onChange={(e) => setNewPortapotty(e.target.checked)} checked={newPortapotty} />
+          </label>
 
-          <select
-            onChange={(event) => {
-              setNewStandalone(event.target.value);
-            }}
-            value={newStandalone}
-          >
-            <option value="">Standalone?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+
+          <label>
+            Standalone?
+            <input type="checkbox" onChange={(e) => setNewStandalone(e.target.checked)} checked={newStandalone} />
+          </label>
+
 
           <select
             onChange={(event) => {
@@ -205,64 +206,41 @@ function App() {
             <option value="Clean">Clean</option>
           </select>
 
-          <select
-            onChange={(event) => {
-              setNewToiletPaper(event.target.value);
-            }}
-            value={newToiletPaper}
-          >
-            <option value="">Toilet paper left?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
 
-          <select
-            onChange={(event) => {
-              setNewHandicapAccessible(event.target.value);
-            }}
-            value={newHandicapAccessible}
-          >
-            <option value="">Handicap accessible?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <label>
+            Toilet paper left?
+            <input type="checkbox" onChange={(e) => setNewToiletPaper(e.target.checked)} checked={newToiletPaper} />
+          </label>
 
-          <select
-            onChange={(event) => {
-              setNewUnisex(event.target.value);
-            }}
-            value={newUnisex}
-          >
-            <option value="">Unisex?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
 
-          <select
-            onChange={(event) => {
-              setNewDiaperChangingStation(event.target.value);
-            }}
-            value={newDiaperChangingStation}
-          >
-            <option value="">Diaper changing station?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+          <label>
+            Handicap accessible?
+            <input type="checkbox" onChange={(e) => setNewHandicapAccessible(e.target.checked)} checked={newHandicapAccessible} />
+          </label>
 
-          <select
-            onChange={(event) => {
-              setNewSoap(event.target.value);
-            }}
-            value={newSoap}
-          >
-            <option value="">Soap?...</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
+
+          <label>
+            Unisex?
+            <input type="checkbox" onChange={(e) => setNewUnisex(e.target.checked)} checked={newUnisex} />
+          </label>
+
+
+          <label>
+            Diaper changing station?
+            <input type="checkbox" onChange={(e) => setNewDiaperChangingStation(e.target.checked)} checked={newDiaperChangingStation} />
+          </label>
+
+
+          <label>
+            Soap?
+            <input type="checkbox" onChange={(e) => setNewSoap(e.target.checked)} checked={newSoap} />
+          </label>
+
 
           <button onClick={createUser2}>Add Entry2</button>
         </div>
-      </Popup>
+    </Popup>
+
 
       <div className="popup-content">
   <label>
@@ -276,6 +254,7 @@ function App() {
     />
   </label>
 
+
   <label>
     Standalone:
     <input
@@ -286,6 +265,7 @@ function App() {
       checked={queryStandalone}
     />
   </label>
+
 
   <label>
     Level of Cleanliness:
@@ -302,6 +282,7 @@ function App() {
     </select>
   </label>
 
+
   <label>
     Toilet Paper:
     <input
@@ -312,6 +293,7 @@ function App() {
       checked={queryToiletPaper}
     />
   </label>
+
 
   <label>
     Handicap Accessible:
@@ -324,6 +306,7 @@ function App() {
     />
   </label>
 
+
   <label>
     Unisex:
     <input
@@ -334,6 +317,7 @@ function App() {
       checked={queryUnisex}
     />
   </label>
+
 
   <label>
     Diaper Changing Station:
@@ -346,6 +330,7 @@ function App() {
     />
   </label>
 
+
   <label>
     Soap:
     <input
@@ -357,8 +342,10 @@ function App() {
     />
   </label>
 
+
   <button onClick={fetchFilteredData}>Apply</button>
 </div>
+
 
       {users.map((user) => {
         return (
@@ -371,6 +358,7 @@ function App() {
           </div>
         );
       })}
+
 
       {entries2.map((entry2) => {
         return (
@@ -390,17 +378,24 @@ function App() {
   );
 }
 
+
 export default App;
+
+
 
 
 /*
 get all the values from query using check boxes and drop downs.
- When the user presses apply, it calls the query function and 
- passes in the values from the check boxes and drop downs. The 
- query function then uses the values to query the database and 
+ When the user presses apply, it calls the query function and
+ passes in the values from the check boxes and drop downs. The
+ query function then uses the values to query the database and
  return the results. The results are then displayed on the screen.
+
 
  if all the values are null or the apply changes button has not been
  added, then juts use the map function to display all the values which
  we already have the code for.
 */
+
+
+
