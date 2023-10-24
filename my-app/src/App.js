@@ -155,6 +155,7 @@ const createUser = async () => {
 
   return (
     <div className="App">
+      <h1 className="app-title">WATERWORKS</h1> {/* Add a giant title */}
       <button onClick={() => setShowPopup1(true)}>Enter Water Fountain</button>
 
 

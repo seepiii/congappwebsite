@@ -1,4 +1,5 @@
 .App {
+  color: #88c6e7; 
   text-align: center;
 }
 
@@ -13,11 +14,19 @@
   }
 }
 .boxed-entry {
-  border: 7px solid #000000; /* Add your preferred border style */
-  padding: 9px; /* Add padding to create some spacing */
-  margin: 9px; /* Add margin for separation */
+  border: 7px solid #88c6e7; /* Baby blue border color */
+  background-color: #f0f8ff; /* Light baby blue background color */
+  padding: 12px; /* Add padding to create spacing */
+  margin: 12px; /* Add margin for separation */
   max-width: 300px; /* Set a maximum width in pixels */
 }
+.app-title {
+  font-size: 3rem; /* Adjust the size to make it giant */
+  margin: 20px 0; /* Add some spacing around the title */
+  color: #88c6e7; /* Baby blue color */
+  text-transform: uppercase; /* Convert text to uppercase */
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -31,6 +40,12 @@
 
 .App-link {
   color: #61dafb;
+}
+.app-title {
+  font-size: 3rem; /* Adjust the size to make it giant */
+  margin: 20px 0; /* Add some spacing around the title */
+  color: #88c6e7; /* Baby blue color */
+  text-transform: uppercase; /* Convert text to uppercase */
 }
 
 @keyframes App-logo-spin {
