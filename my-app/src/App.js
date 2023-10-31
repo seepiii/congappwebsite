@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, useEffect } from 'react';
 import {
@@ -13,9 +12,73 @@ import 'reactjs-popup/dist/index.css';
 import { db, storage } from './firebase.js';
 import { query, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
 
-function App() {
+
+
+
+
+//google maps imports and map container
+const libraries = ['places'];
+
+const mapContainerStyle = {
+  width: '50vw',
+  height: '50vh',
+  position: 'fixed',
+  left: 500,
+  top: 800,
+};
+const center = {
+  lat: 7.2905715, // default latitude
+  lng: 80.6337262, // default longitude
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//changed to arrow function
+const App = () => {
+
+
+
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: 'AIzaSyDRdlONrVMokesPRmCsvJi2V0IjwNVHuew',
+    libraries,
+  });
+
+  
+  /*if (loadError) {
+    return <div>Error loading maps</div>;
+  }
+
+  if (!isLoaded) {
+    return <div>Loading maps</div>;
+  }
+*/
+
+
+
+
+
   const [newWorking, setNewWorking] = useState(null);
   const [NewQuality, setNewQuality] = useState(null);
   const [newTemp, setNewTemp] = useState(null);
@@ -154,7 +217,27 @@ const createUser = async () => {
 
 
   return (
-    <div className="App">
+  <div className="App">
+
+
+
+{isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          zoom={10}
+          center={center}
+        >
+          <Marker position={center} />
+          {/* Add more markers if needed */}
+        </GoogleMap>
+      ) : (
+        <div>Loading maps</div>
+      )}
+
+
+
+
+
       <h1 className="app-title">WATERWORKS</h1> {/* Add a giant title */}
       <button onClick={() => setShowPopup1(true)}>Enter Water Fountain</button>
 
@@ -391,6 +474,8 @@ const createUser = async () => {
       })}
 
 
+
+
       {entries2.map((entry2) => {
         return (
           <div key={entry2.id} className="boxed-entry">
@@ -407,6 +492,12 @@ const createUser = async () => {
       })}
     </div>
   );
+
+
+
+
+
+  
 }
 
 
